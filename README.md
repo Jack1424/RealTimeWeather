@@ -1,2 +1,2 @@
-# RealTimeWeather
+# RealTimeWeather [![Build Status](https://app.travis-ci.com/Jack1424/RealTimeWeather.svg?branch=master)](https://app.travis-ci.com/Jack1424/RealTimeWeather)
 A lightweight Minecraft Java server plugin that allows you to sync your server's time and weather with the real world
