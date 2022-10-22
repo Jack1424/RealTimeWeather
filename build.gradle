@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'io.github.Jack1424'
@@ -18,7 +19,12 @@ repositories {
 }
 
 dependencies {
+    implementation("org.bstats:bstats-bukkit:3.0.0")
     compileOnly 'io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT'
+}
+
+shadowJar {
+    relocate('org.bstats', 'io.github.jack1424.realtimeweather')
 }
 
 def targetJavaVersion = 17

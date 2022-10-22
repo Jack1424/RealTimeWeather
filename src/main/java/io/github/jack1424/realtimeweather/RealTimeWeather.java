@@ -1,5 +1,7 @@
 package io.github.jack1424.realtimeweather;
 
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -44,6 +46,11 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 			setupWeather();
 
 		getServer().getPluginManager().registerEvents(this, this);
+
+		debug("Enabling metrics...");
+		Metrics metrics = new Metrics(this, 16709);
+		metrics.addCustomChart(new SimplePie("weather_sync_enabled", () -> String.valueOf(weatherEnabled)));
+		metrics.addCustomChart(new SimplePie("time_sync_enabled", () -> String.valueOf(timeEnabled)));
 
 		logger.info("Started!");
 	}
