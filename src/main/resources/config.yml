@@ -6,8 +6,7 @@
 SyncTime: false
 #                                                                                                                    #
 # Enter the time zone that you want to sync your world(s) with                                                       #
-# This value CAN be different from your chosen weather location                                                      #
-# Acceptable formats include: EST, America/Los_Angeles, and GMT-8:00                                                 #
+# This location CAN be different from your chosen weather location                                                   #
 # You can find a full list of timezones here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List      #
 Timezone: 'America/New_York'
 #                                                                                                                    #
