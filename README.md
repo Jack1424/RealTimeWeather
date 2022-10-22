@@ -8,6 +8,7 @@ A lightweight Minecraft Java server plugin that allows you to sync your server's
 
 **Upcoming Features:**
 - [ ] Use WeatherPlusAPI (more weather states)
+- [ ] Support for more Minecraft verions
 
 ## Contributions
 I'm open to any help/ideas that you have. Just open an issue or a pull request and I'll be sure to look at it as soon as I can. Builds with Gradle.
