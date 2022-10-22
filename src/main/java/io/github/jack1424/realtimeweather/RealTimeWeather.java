@@ -2,6 +2,11 @@ package io.github.jack1424.realtimeweather;
 
 import org.bukkit.GameRule;
 import org.bukkit.World;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,12 +21,7 @@ import java.time.zone.ZoneRulesException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public final class RealTimeWeather extends JavaPlugin {
-	/*
-	TODO:
-	- Override default minecraft time/weather commands (when applicable)
-	 */
-
+public final class RealTimeWeather extends JavaPlugin implements Listener {
 	private Logger logger;
 	private ZoneId timezone;
 	private boolean timeEnabled, weatherEnabled, debug;
@@ -43,6 +43,8 @@ public final class RealTimeWeather extends JavaPlugin {
 		if (weatherEnabled)
 			setupWeather();
 
+		getServer().getPluginManager().registerEvents(this, this);
+
 		logger.info("Started!");
 	}
 
@@ -57,6 +59,22 @@ public final class RealTimeWeather extends JavaPlugin {
 			}
 
 		logger.info("Stopping...");
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onOperatorSet(PlayerCommandPreprocessEvent event) {
+		if ((timeEnabled && event.getMessage().contains("time set")) || (weatherEnabled && event.getMessage().contains("weather"))) {
+			event.setCancelled(true);
+			event.getPlayer().sendMessage("Command cancelled (RealTimeWeather is controlling this)");
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onOperatorSetConsole(ServerCommandEvent event) {
+		if ((timeEnabled && event.getCommand().contains("time set")) || (weatherEnabled && event.getCommand().contains("weather"))) {
+			event.setCancelled(true);
+			event.getSender().sendMessage("Command cancelled (RealTimeWeather is controlling this)");
+		}
 	}
 
 	private void setupTime() {
