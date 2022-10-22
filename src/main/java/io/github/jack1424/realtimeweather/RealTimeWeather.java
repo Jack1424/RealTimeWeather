@@ -54,8 +54,10 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 			if (world.getEnvironment().equals(World.Environment.NORMAL)) {
 				debug("Re-enabling normal daylight and weather cycles...");
 
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
-				world.setGameRule(GameRule.DO_WEATHER_CYCLE, true);
+				if (timeEnabled)
+					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+				if (weatherEnabled)
+					world.setGameRule(GameRule.DO_WEATHER_CYCLE, true);
 			}
 
 		logger.info("Stopping...");
