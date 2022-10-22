@@ -1,30 +1,28 @@
 package io.github.jack1424.realtimeweather;
 
-import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.time.zone.ZoneRulesException;
-import java.util.Calendar;
-import java.util.Objects;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Logger;
 
 public final class RealTimeWeather extends JavaPlugin {
 	/*
 	TODO:
-	- Check configuration error handling
-	- Check debug outputs
-	- Make logs look better (colors and stuff)
 	- Override default minecraft time/weather commands (when applicable)
 	 */
 
 	private Logger logger;
-	private String zipCode, countryCode;
 	private ZoneId timezone;
 	private boolean timeEnabled, weatherEnabled, debug;
 
@@ -92,9 +90,10 @@ public final class RealTimeWeather extends JavaPlugin {
 
 	private void setupWeather() {
 		String apiKey = getConfig().getString("APIKey");
-		zipCode = getConfig().getString("ZipCode");
-		countryCode = getConfig().getString("CountryCode");
+		String zipCode = getConfig().getString("ZipCode");
+		String countryCode = getConfig().getString("CountryCode");
 
+		String lat, lon;
 		try {
 			HttpsURLConnection con = (HttpsURLConnection) new URL(String.format("https://api.openweathermap.org/geo/1.0/zip?zip=%s,%s&appid=%s", zipCode, countryCode, apiKey)).openConnection();
 			con.setRequestMethod("GET");
@@ -106,16 +105,20 @@ public final class RealTimeWeather extends JavaPlugin {
 				throw new Exception("Server error");
 			}
 			else if (response > 399) {
-				String message = "Error when getting weather information:";
+				String message = "Error when getting weather information: ";
 				switch (response) {
-					case 401: logger.severe(message + "API key incorrect");
-					case 404: logger.severe(message + "Zip/Country code incorrect");
-					default: logger.severe("Unknown error");
+					case 401 -> logger.severe(message + "API key incorrect");
+					case 404 -> logger.severe(message + "Zip/Country code incorrect");
+					default -> logger.severe("Unknown error");
 				}
 				logger.severe("Please check that the values set in the config file are correct");
 
 				throw new Exception("Configuration error");
 			}
+
+			JSONObject obj = makeWeatherRequest(con.getURL());
+			lat = String.valueOf(obj.get("lat"));
+			lon = String.valueOf(obj.get("lon"));
 		} catch (Exception e) {
 			debug(e.getMessage());
 			logger.severe("Disabling weather sync...");
@@ -124,24 +127,31 @@ public final class RealTimeWeather extends JavaPlugin {
 			return;
 		}
 
-		OpenWeatherMapClient owm = new OpenWeatherMapClient(apiKey);
-
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			debug("Syncing weather...");
 
-			int weatherId = 0;
+			boolean rain = false, thunder = false;
 			try {
-				weatherId = owm.currentWeather().single().byZipCodeAndCountry(zipCode, countryCode).retrieve().asJava().getWeatherState().getId();
+				JSONObject obj = makeWeatherRequest(new URL(String.format("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s", lat, lon, apiKey)));
+				JSONArray conditions = (JSONArray) obj.get("weather");
+
+				for (Object rawCondition : conditions) {
+					JSONObject condition = (JSONObject) rawCondition;
+					int id = Integer.parseInt(String.valueOf(condition.get("id")));
+					debug("Weather ID: " + id);
+
+					while (id >= 10)
+						id /= 10;
+
+					if (!rain)
+						rain = id == 2 || id == 3 || id == 5 || id == 6;
+					if (!thunder)
+						thunder = id == 2;
+				}
 			} catch (Exception e) {
 				logger.severe("There was an error when attempting to get weather information");
 				debug(e.getMessage());
 			}
-
-			while(weatherId >= 10)
-				weatherId /= 10;
-
-			boolean rain = weatherId == 2 || weatherId == 3 || weatherId == 5 || weatherId == 6;
-			boolean thunder = weatherId == 2;
 
 			debug("Setting weather (Rain: " + rain + ", Thunder: " + thunder + ")...");
 			for (World world : getServer().getWorlds())
@@ -152,9 +162,21 @@ public final class RealTimeWeather extends JavaPlugin {
 		}, 0L, 6000L);
 	}
 
+	private JSONObject makeWeatherRequest(URL url) throws IOException, ParseException {
+		Scanner scanner = new Scanner(url.openStream());
+		StringBuilder data = new StringBuilder();
+		while (scanner.hasNext()) {
+			data.append(scanner.nextLine());
+		}
+		scanner.close();
+
+		JSONParser parser = new JSONParser();
+		return (JSONObject) parser.parse(data.toString());
+	}
+
 	private void debug(String message) {
 		if (debug) {
-			logger.info(message);
+			logger.info("[DEBUG] " + message);
 		}
 	}
 }

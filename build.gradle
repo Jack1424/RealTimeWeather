@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'io.github.Jack1424'
@@ -20,7 +19,6 @@ repositories {
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT'
-    implementation 'com.github.prominence:openweathermap-api:2.3.0'
 }
 
 def targetJavaVersion = 17
