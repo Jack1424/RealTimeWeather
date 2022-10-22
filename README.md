@@ -12,3 +12,5 @@ A lightweight Minecraft Java server plugin that allows you to sync your server's
 
 ## Contributions
 I'm open to any help/ideas that you have. Just open an issue or a pull request and I'll be sure to look at it as soon as I can. Builds with `gradlew shadowJar`.
+
+License: GPL-3.0
