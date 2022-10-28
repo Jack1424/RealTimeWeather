@@ -153,7 +153,11 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 			weatherEnabled = false;
 			return;
 		}
-
+		
+		for (World world : getServer().getWorlds())
+			if (world.getEnvironment().equals(World.Environment.NORMAL))
+				world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			debug("Syncing weather...");
 
