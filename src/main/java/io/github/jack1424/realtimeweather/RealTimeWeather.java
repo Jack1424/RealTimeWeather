@@ -2,7 +2,6 @@ package io.github.jack1424.realtimeweather;
 
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
-import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -62,9 +61,9 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 				debug("Re-enabling normal daylight and weather cycles...");
 
 				if (timeEnabled)
-					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+					world.setGameRuleValue("doDaylightCycle", "true");
 				if (weatherEnabled)
-					world.setGameRule(GameRule.DO_WEATHER_CYCLE, true);
+					world.setGameRuleValue("doWeatherCycle", "true");
 			}
 
 		logger.info("Stopping...");
@@ -103,7 +102,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 
 		for (World world : getServer().getWorlds())
 			if (world.getEnvironment().equals(World.Environment.NORMAL))
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+				world.setGameRuleValue("doDaylightCycle", "false");
 
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			if (timeEnabled) {
@@ -129,15 +128,18 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 			int response = con.getResponseCode();
 			if (response > 499) {
 				logger.severe("There was a server error when requesting weather information. Please try again later");
-				throw new Exception("Server error");
+				throw new Exception("Server/client error");
 			}
 			else if (response > 399) {
 				String message = "Error when getting weather information: ";
-				switch (response) {
-					case 401 -> logger.severe(message + "API key incorrect");
-					case 404 -> logger.severe(message + "Zip/Country code incorrect");
-					default -> logger.severe("Unknown error");
-				}
+
+				if (response == 401)
+					logger.severe(message + "API key incorrect");
+				else if (response == 404)
+					logger.severe(message + "Zip/Country code incorrect");
+				else
+					logger.severe("Unknown error");
+
 				logger.severe("Please check that the values set in the config file are correct");
 
 				throw new Exception("Configuration error");
@@ -156,7 +158,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 		
 		for (World world : getServer().getWorlds())
 			if (world.getEnvironment().equals(World.Environment.NORMAL))
-				world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+				world.setGameRuleValue("doWeatherCycle", "false");
 		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			debug("Syncing weather...");

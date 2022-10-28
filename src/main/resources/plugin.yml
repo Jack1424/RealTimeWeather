@@ -2,6 +2,5 @@ name: RealTimeWeather
 version: '${version}'
 description: Sync your server time and weather with the real world
 main: io.github.jack1424.realtimeweather.RealTimeWeather
-api-version: 1.19
 authors: [ Jack1424 ]
 website: https://github.com/Jack1424/RealTimeWeather
