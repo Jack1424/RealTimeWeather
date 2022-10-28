@@ -113,7 +113,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 				Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(timezone));
 				for (World world : getServer().getWorlds())
 					if (world.getEnvironment().equals(World.Environment.NORMAL))
-						world.setTime((1000 * cal.get(Calendar.HOUR_OF_DAY)) + (16 * cal.get(Calendar.MINUTE)) - 6000); // TODO: Time is one minute behind
+						world.setTime((1000 * cal.get(Calendar.HOUR_OF_DAY)) + (16 * (cal.get(Calendar.MINUTE) + 1)) - 6000);
 			}
 		}, 0L, timeSyncInterval);
 	}
