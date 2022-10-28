@@ -22,6 +22,7 @@ import java.time.zone.ZoneRulesException;
 import java.util.*;
 import java.util.logging.Logger;
 
+@SuppressWarnings("deprecation")
 public final class RealTimeWeather extends JavaPlugin implements Listener {
 	private Logger logger;
 	private ZoneId timezone;
