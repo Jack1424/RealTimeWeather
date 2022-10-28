@@ -4,6 +4,9 @@
 ################################# TIME SYNC SETTINGS #################################################################
 # Set to true to enable time syncing, or false to disable                                                            #
 SyncTime: false
+#
+# You can change the time between time syncs from the default (5 seconds) below                                      #
+TimeSyncInterval: 100
 #                                                                                                                    #
 # Enter the time zone that you want to sync your world(s) with                                                       #
 # This location CAN be different from your chosen weather location                                                   #
@@ -15,6 +18,11 @@ Timezone: 'America/New_York'
 ################################# WEATHER SYNC SETTINGS ##############################################################
 # Set to true to enable weather syncing, or false to disable                                                         #
 SyncWeather: false
+#
+# You can change the time between weather syncs from the default (5 minutes) below                                   #
+# Due to OpenWeather's restrictions, setting this value below 2400 (2 minutes) will cause problems                   #
+# You can find a handy tick calculator here: https://mapmaking.fr/tick/                                              #
+WeatherSyncInterval: 6000
 #                                                                                                                    #
 # In order to access the weather sync feature, create an account at https://openweathermap.org/                      #
 # Then, create an API key at https://openweathermap.org/appid and copy it                                            #

@@ -86,8 +86,11 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 	}
 
 	private void setupTime() {
+		long timeSyncInterval;
+
 		try {
 			timezone = ZoneId.of(Objects.requireNonNull(getConfig().getString("Timezone")));
+			timeSyncInterval = getConfig().getLong("TimeSyncInterval");
 		} catch (NullPointerException|ZoneRulesException e) {
 			logger.severe("Error loading timezone. Check that the values in your configuration file are valid.");
 			debug(e.getMessage());
@@ -97,7 +100,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 			return;
 		}
 
-		debug("Enabling time zone sync (every second)");
+		debug("Enabling time zone sync...");
 		debug("Syncing time with " + timezone.toString());
 
 		for (World world : getServer().getWorlds())
@@ -111,16 +114,21 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 					if (world.getEnvironment().equals(World.Environment.NORMAL))
 						world.setTime((1000 * cal.get(Calendar.HOUR_OF_DAY)) + (16 * cal.get(Calendar.MINUTE)) - 6000); // TODO: Time is one minute behind
 			}
-		}, 0L, 20L); // TODO: Does this really need to update every second?
+		}, 0L, timeSyncInterval);
 	}
 
 	private void setupWeather() {
+		long weatherSyncInterval;
+
 		String apiKey = getConfig().getString("APIKey");
 		String zipCode = getConfig().getString("ZipCode");
 		String countryCode = getConfig().getString("CountryCode");
 
 		String lat, lon;
+
 		try {
+			weatherSyncInterval = getConfig().getLong("WeatherSyncInterval");
+
 			HttpsURLConnection con = (HttpsURLConnection) new URL(String.format("https://api.openweathermap.org/geo/1.0/zip?zip=%s,%s&appid=%s", zipCode, countryCode, apiKey)).openConnection();
 			con.setRequestMethod("GET");
 			con.connect();
@@ -192,7 +200,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 					world.setStorm(rain);
 					world.setThundering(thunder);
 				}
-		}, 0L, 6000L);
+		}, 0L, weatherSyncInterval);
 	}
 
 	private JSONObject makeWeatherRequest(URL url) throws IOException, ParseException {
