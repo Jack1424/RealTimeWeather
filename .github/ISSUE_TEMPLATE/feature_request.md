@@ -1,5 +1,5 @@
 name: Feature request
-about: Use this to request new features and/or changes
+description: Use this to request new features and/or changes
 labels: enhancement
 body:
 - type: checkboxes

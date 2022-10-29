@@ -1,5 +1,5 @@
 name: Bug report
-about: Report problems/issues here
+description: Report problems/issues here
 labels: bug
 body:
 - type: checkboxes
