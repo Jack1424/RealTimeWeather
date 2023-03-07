@@ -1,6 +1,8 @@
-# RealTimeWeather [![Build Status](https://app.travis-ci.com/Jack1424/RealTimeWeather.svg?branch=master)](https://app.travis-ci.com/Jack1424/RealTimeWeather)
-A lightweight Minecraft Java server plugin that allows you to sync your server's time and weather with the real world.
+![4SplitSingleLineCloseColors](https://user-images.githubusercontent.com/55409055/223574298-af84f490-5f8a-46eb-b22e-f5675a796f5b.png)
+[![Build Status](https://app.travis-ci.com/Jack1424/RealTimeWeather.svg?branch=master)](https://app.travis-ci.com/Jack1424/RealTimeWeather)
 
+### A lightweight Minecraft server plugin that allows you to sync your server's time and weather with the real world
+___
 **Current Features:**
 - Lightweight
 - Easy setup
