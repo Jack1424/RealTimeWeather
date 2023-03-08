@@ -29,7 +29,7 @@ body:
 - type: dropdown
   attributes:
     label: Server Software
-    description: What type of server are you running RTW on?
+    description: What type of server are you running RealTimeWeather on?
     options:
       - Bukkit
       - Paper
