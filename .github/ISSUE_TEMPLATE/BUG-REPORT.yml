@@ -5,7 +5,7 @@ body:
 - type: checkboxes
   attributes:
     label: Have you searched the wiki and looked for existing issues for this?
-    description: Check the wiki first in case this is a common issue. If it isn't make sure that no one else has reported it yet.
+    description: Check the wiki first in case this is a common issue. If it isn't make sure that [no one else has reported it](https://github.com/Jack1424/RealTimeWeather/issues?q=is%3Aissue+label%3Abug+).
     options:
     -  label: This is not a common issue or cannot be fixed by the solutions provided
        required: true
@@ -34,6 +34,7 @@ body:
       - Bukkit
       - Paper
       - Spigot
+      - Purpur
       - Other
   validations:
     required: true
@@ -42,7 +43,7 @@ body:
   attributes:
     label: Minecraft version
     description: What version of Minecraft is your server running?
-    placeholder: Example: 1.19.2
+    placeholder: 'Example: 1.19.3'
   validations:
     required: true
 
