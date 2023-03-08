@@ -13,7 +13,6 @@ ___
 **Upcoming Features:**
 - [ ] Use WeatherPlusAPI (more possible weather states)
 - [ ] Multi-world support
-- [ ] Wiki
 
 ## Installation
 Just download the [latest version](https://github.com/Jack1424/RealTimeWeather/releases/latest) of RTW and put it in your plugins directory. 
