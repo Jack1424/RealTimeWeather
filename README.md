@@ -12,6 +12,7 @@ ___
 
 **Upcoming Features:**
 - [ ] Use WeatherPlusAPI (more possible weather states)
+- [ ] Multi-world support
 - [ ] Wiki
 
 ## Installation
