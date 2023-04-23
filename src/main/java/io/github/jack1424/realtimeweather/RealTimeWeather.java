@@ -9,14 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.IOException;
-import java.net.URL;
 import java.time.ZoneId;
 import java.time.zone.ZoneRulesException;
 import java.util.*;
@@ -122,19 +115,14 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 		long weatherSyncInterval;
 
 		String apiKey = getConfig().getString("APIKey");
-		String zipCode = getConfig().getString("ZipCode");
-		String countryCode = getConfig().getString("CountryCode");
-
-		String lat, lon;
+		String lat = getConfig().getString("Latitude"), lon = getConfig().getString("Longitude");
 
 		try {
 			weatherSyncInterval = getConfig().getLong("WeatherSyncInterval");
 
-			HttpsURLConnection con = (HttpsURLConnection) new URL(String.format("https://api.openweathermap.org/geo/1.0/zip?zip=%s,%s&appid=%s", zipCode, countryCode, apiKey)).openConnection();
-			con.setRequestMethod("GET");
-			con.connect();
+			RequestObject request = new RequestObject(apiKey, lat, lon);
 
-			int response = con.getResponseCode();
+			int response = request.getResponseCode();
 			if (response > 499) {
 				logger.severe("There was a server error when requesting weather information. Please try again later");
 				throw new Exception("Server/client error");
@@ -153,10 +141,6 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 
 				throw new Exception("Configuration error");
 			}
-
-			JSONObject obj = makeWeatherRequest(con.getURL());
-			lat = String.valueOf(obj.get("lat"));
-			lon = String.valueOf(obj.get("lon"));
 		} catch (Exception e) {
 			debug(e.getMessage());
 			logger.severe("Disabling weather sync...");
@@ -172,48 +156,20 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			debug("Syncing weather...");
 
-			boolean rain = false, thunder = false;
 			try {
-				JSONObject obj = makeWeatherRequest(new URL(String.format("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s", lat, lon, apiKey)));
-				JSONArray conditions = (JSONArray) obj.get("weather");
+				RequestObject request = new RequestObject(apiKey, lat, lon);
 
-				for (Object rawCondition : conditions) {
-					JSONObject condition = (JSONObject) rawCondition;
-					int id = Integer.parseInt(String.valueOf(condition.get("id")));
-					debug("Weather ID: " + id);
-
-					while (id >= 10)
-						id /= 10;
-
-					if (!rain)
-						rain = id == 2 || id == 3 || id == 5 || id == 6;
-					if (!thunder)
-						thunder = id == 2;
-				}
+				debug("Setting weather (Rain: " + request.isRaining() + ", Thunder: " + request.isThundering() + ")...");
+				for (World world : getServer().getWorlds())
+					if (world.getEnvironment().equals(World.Environment.NORMAL)) {
+						world.setStorm(request.isRaining());
+						world.setThundering(request.isThundering());
+					}
 			} catch (Exception e) {
 				logger.severe("There was an error when attempting to get weather information");
 				debug(e.getMessage());
 			}
-
-			debug("Setting weather (Rain: " + rain + ", Thunder: " + thunder + ")...");
-			for (World world : getServer().getWorlds())
-				if (world.getEnvironment().equals(World.Environment.NORMAL)) {
-					world.setStorm(rain);
-					world.setThundering(thunder);
-				}
 		}, 0L, weatherSyncInterval);
-	}
-
-	private JSONObject makeWeatherRequest(URL url) throws IOException, ParseException {
-		Scanner scanner = new Scanner(url.openStream());
-		StringBuilder data = new StringBuilder();
-		while (scanner.hasNext()) {
-			data.append(scanner.nextLine());
-		}
-		scanner.close();
-
-		JSONParser parser = new JSONParser();
-		return (JSONObject) parser.parse(data.toString());
 	}
 
 	private void debug(String message) {
