@@ -4,6 +4,9 @@
 # Set to true to enable time syncing, or false to disable                                                            #
 SyncTime: false
 #                                                                                                                    #
+# Set to false to enable the /time set command (not recommended)                                                     #
+BlockTimeSetCommand: true
+#                                                                                                                    #
 # You can change the time between time syncs from the default (5 seconds) below                                      #
 TimeSyncInterval: 100
 #                                                                                                                    #
@@ -17,6 +20,9 @@ Timezone: 'Etc/UTC'
 ################################# WEATHER SYNC SETTINGS ##############################################################
 # Set to true to enable weather syncing, or false to disable                                                         #
 SyncWeather: false
+#                                                                                                                    #
+# Set to false to enable the /weather command (not recommended)                                                      #
+BlockWeatherCommand: true
 #                                                                                                                    #
 # You can change the time between weather syncs from the default (5 minutes) below                                   #
 # Due to OpenWeather's restrictions, setting this value below 2400 (2 minutes) will cause problems                   #

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public final class RealTimeWeather extends JavaPlugin implements Listener {
 	private Logger logger;
 	private ZoneId timezone;
-	private boolean timeEnabled, weatherEnabled, debug;
+	private boolean timeEnabled, weatherEnabled, debug, blockTimeSetCommand, blockWeatherCommand;
 
 	@Override
 	public void onEnable() {
@@ -65,7 +65,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onOperatorSet(PlayerCommandPreprocessEvent event) {
-		if ((timeEnabled && event.getMessage().contains("time set")) || (weatherEnabled && event.getMessage().contains("weather"))) {
+		if ((blockTimeSetCommand && timeEnabled && event.getMessage().contains("time set")) || (blockWeatherCommand && weatherEnabled && event.getMessage().contains("weather"))) {
 			event.setCancelled(true);
 			event.getPlayer().sendMessage("Command cancelled (RealTimeWeather is controlling this)");
 		}
@@ -73,7 +73,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onOperatorSetConsole(ServerCommandEvent event) {
-		if ((timeEnabled && event.getCommand().contains("time set")) || (weatherEnabled && event.getCommand().contains("weather"))) {
+		if ((blockTimeSetCommand && timeEnabled && event.getCommand().contains("time set")) || (blockWeatherCommand && weatherEnabled && event.getCommand().contains("weather"))) {
 			event.setCancelled(true);
 			event.getSender().sendMessage("Command cancelled (RealTimeWeather is controlling this)");
 		}
@@ -85,6 +85,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 		try {
 			timezone = ZoneId.of(Objects.requireNonNull(getConfig().getString("Timezone")));
 			timeSyncInterval = getConfig().getLong("TimeSyncInterval");
+			blockTimeSetCommand = getConfig().getBoolean("BlockTimeSetCommand");
 		} catch (NullPointerException|ZoneRulesException e) {
 			logger.severe("Error loading timezone. Check that the values in your configuration file are valid.");
 			debug(e.getMessage());
@@ -119,6 +120,7 @@ public final class RealTimeWeather extends JavaPlugin implements Listener {
 
 		try {
 			weatherSyncInterval = getConfig().getLong("WeatherSyncInterval");
+			blockWeatherCommand = getConfig().getBoolean("blockWeatherCommand");
 
 			RequestObject request = new RequestObject(apiKey, lat, lon);
 
