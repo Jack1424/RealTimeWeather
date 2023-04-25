@@ -1,4 +1,5 @@
 # RealTimeWeather Configuration File (v2)
+# You can find detailed instructions at: https://github.com/Jack1424/RealTimeWeather/wiki#editing-the-configuration-file
 
 ################################# TIME SYNC SETTINGS #################################################################
 # Set to true to enable time syncing, or false to disable                                                            #
@@ -45,5 +46,5 @@ Longitude: '0'
 # This is useful if the plugin is not working, and you want to find out what's wrong
 # This will also provide java error messages when an error is caught and managed by RTM
 # Note: There will be no messages during a time sync because they happen very frequently
-# Note: Java exceptions and fatal plugin errors will still be logged regardless of the debug value
+# Note: Unhandled plugin errors will still be logged regardless of the debug value
 Debug: false
