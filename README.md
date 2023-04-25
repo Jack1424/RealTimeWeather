@@ -12,6 +12,7 @@ ___
 
 **Upcoming Features:**
 - [ ] Use WeatherPlusAPI (more possible weather states)
+- [ ] Commands
 - [ ] Multi-world support
 - [ ] Folia support
 
