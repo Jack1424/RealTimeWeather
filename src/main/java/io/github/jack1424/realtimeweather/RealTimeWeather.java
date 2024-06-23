@@ -21,6 +21,7 @@ public final class RealTimeWeather extends JavaPlugin {
 		logger.info("Loading configuration...");
 		saveDefaultConfig();
 		config = new Configurator(this);
+		config.refreshValues();
 
 		debug("TimeSync: " + config.isTimeEnabled());
 		if (config.isTimeEnabled())

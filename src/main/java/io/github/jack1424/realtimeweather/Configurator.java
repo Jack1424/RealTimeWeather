@@ -21,8 +21,6 @@ public class Configurator {
 	public Configurator(RealTimeWeather rtw) {
 		this.rtw = rtw;
 		configFile = rtw.getConfig();
-
-		refreshValues();
 	}
 
 	public void refreshValues() {
