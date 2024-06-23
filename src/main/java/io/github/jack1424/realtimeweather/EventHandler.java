@@ -17,7 +17,7 @@ public class EventHandler implements Listener {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getMessage().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getMessage().contains("weather"))) {
 			event.setCancelled(true);
-			event.getPlayer().sendMessage("Command cancelled (RealTimeWeather is controlling this)");
+			event.getPlayer().sendMessage("Command disabled by RealTimeWeather");
 		}
 	}
 
@@ -26,7 +26,7 @@ public class EventHandler implements Listener {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getCommand().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getCommand().contains("weather"))) {
 			event.setCancelled(true);
-			event.getSender().sendMessage("Command cancelled (RealTimeWeather is controlling this)");
+			event.getSender().sendMessage("Command disabled by RealTimeWeather");
 		}
 	}
 }
