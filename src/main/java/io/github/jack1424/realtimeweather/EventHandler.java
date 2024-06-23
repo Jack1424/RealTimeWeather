@@ -12,7 +12,7 @@ public class EventHandler implements Listener {
 		config = rtw.getConfigurator();
 	}
 
-	@org.bukkit.event.EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	@org.bukkit.event.EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onOperatorSet(PlayerCommandPreprocessEvent event) {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getMessage().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getMessage().contains("weather"))) {
@@ -21,7 +21,7 @@ public class EventHandler implements Listener {
 		}
 	}
 
-	@org.bukkit.event.EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	@org.bukkit.event.EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onOperatorSetConsole(ServerCommandEvent event) {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getCommand().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getCommand().contains("weather"))) {
