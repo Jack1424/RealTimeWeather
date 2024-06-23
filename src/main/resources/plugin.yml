@@ -3,5 +3,5 @@ version: '${version}'
 description: Sync your server time and weather with the real world
 main: io.github.jack1424.realtimeweather.RealTimeWeather
 load: POSTWORLD
-authors: [ Jack1424 ]
+authors: [Jack1424]
 website: https://github.com/Jack1424/RealTimeWeather
