@@ -8,6 +8,12 @@ SyncTime: false
 # Set to false to enable the /time set command (not recommended)                                                     #
 BlockTimeSetCommand: true
 #                                                                                                                    #
+# Prevent players from sleeping in beds at night (they will still be able to set their spawn point)                  #
+# If you disable this, strange things could happen                                                                   #
+DisableBedsAtNight: true
+# The message sent to players when they try to sleep at night when beds are disabled                                 #
+DisableBedsAtNightMessage: ''
+#                                                                                                                    #
 # You can change the time between time syncs from the default (5 seconds) below                                      #
 TimeSyncInterval: 100
 #                                                                                                                    #
@@ -24,6 +30,12 @@ SyncWeather: false
 #                                                                                                                    #
 # Set to false to enable the /weather command (not recommended)                                                      #
 BlockWeatherCommand: true
+#                                                                                                                    #
+# Prevent players from sleeping in beds during a thunderstorm (they will still be able to set their spawn point)     #
+# If you disable this, it could break weather syncing                                                                #
+DisableBedsDuringThunder: true
+# The message sent to players when they try to sleep during a thunderstorm when beds are disabled                    #
+DisableBedsDuringThunderMessage: ''
 #                                                                                                                    #
 # You can change the time between weather syncs from the default (5 minutes) below                                   #
 # Due to OpenWeather's restrictions, setting this value below 2400 (2 minutes) will cause problems                   #

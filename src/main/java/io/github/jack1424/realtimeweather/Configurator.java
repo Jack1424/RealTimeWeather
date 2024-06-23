@@ -14,9 +14,9 @@ public class Configurator {
 	private final RealTimeWeather rtw;
 	private final FileConfiguration configFile;
 	private TimeZone timeZone;
-	private boolean debug, timeEnabled, weatherEnabled, blockTimeSetCommand, blockWeatherCommand;
+	private boolean debug, timeEnabled, weatherEnabled, blockTimeSetCommand, blockWeatherCommand, disableBedsAtNight, disableBedsDuringThunder;
 	private long timeSyncInterval, weatherSyncInterval;
-	private String apiKey, lat, lon;
+	private String apiKey, lat, lon, disableBedsAtNightMessage, disableBedsDuringThunderMessage;
 
 	public Configurator(RealTimeWeather rtw) {
 		this.rtw = rtw;
@@ -30,6 +30,8 @@ public class Configurator {
 		if (isTimeEnabled())
 			try {
 				setBlockTimeSetCommand(configFile.getBoolean("BlockTimeSetCommand"));
+				setDisableBedsAtNight(configFile.getBoolean("DisableBedsAtNight"));
+				setDisableBedsAtNightMessage(configFile.getString("DisableBedsAtNightMessage"));
 				setTimeSyncInterval(configFile.getLong("TimeSyncInterval"));
 				setTimeZone(configFile.getString("Timezone"));
 			} catch (ConfigurationException e) {
@@ -44,6 +46,8 @@ public class Configurator {
 		if (isWeatherEnabled())
 			try {
 				setBlockWeatherCommand(configFile.getBoolean("BlockWeatherCommand"));
+				setDisableBedsDuringThunder(configFile.getBoolean("DisableBedsDuringThunder"));
+				setDisableBedsDuringThunderMessage(configFile.getString("DisableBedsDuringThunderMessage"));
 				setWeatherSyncInterval(configFile.getLong("WeatherSyncInterval"));
 				setAPIKey(configFile.getString("APIKey"));
 				setLat(configFile.getString("Latitude"));
@@ -82,6 +86,24 @@ public class Configurator {
 	public void setBlockTimeSetCommand(boolean value) {
 		blockTimeSetCommand = value;
 		rtw.debug("BlockTimeSetCommand set to " + value);
+	}
+
+	public boolean getDisableBedsAtNight() {
+		return disableBedsAtNight;
+	}
+
+	public void setDisableBedsAtNight(boolean value) {
+		disableBedsAtNight = value;
+		rtw.debug("DisableBedsAtNight set to " + value);
+	}
+
+	public String getDisableBedsAtNightMessage() {
+		return disableBedsAtNightMessage;
+	}
+
+	public void setDisableBedsAtNightMessage(String value) {
+		disableBedsAtNightMessage = value;
+		rtw.debug("NightDisabledBedMessage set to " + value);
 	}
 
 	public long getTimeSyncInterval() {
@@ -126,6 +148,24 @@ public class Configurator {
 	public void setBlockWeatherCommand(boolean value) {
 		blockWeatherCommand = value;
 		rtw.debug("BlockWeatherCommand set to " + value);
+	}
+
+	public boolean getDisableBedsDuringThunder() {
+		return disableBedsDuringThunder;
+	}
+
+	public void setDisableBedsDuringThunder(boolean value) {
+		disableBedsDuringThunder = value;
+		rtw.debug("DisableBedsDuringThunder set to " + value);
+	}
+
+	public String getDisableBedsDuringThunderMessage() {
+		return disableBedsDuringThunderMessage;
+	}
+
+	public void setDisableBedsDuringThunderMessage(String value) {
+		disableBedsDuringThunderMessage = value;
+		rtw.debug("ThunderDisabledBedMessage set to " + value);
 	}
 
 	public long getWeatherSyncInterval() {
