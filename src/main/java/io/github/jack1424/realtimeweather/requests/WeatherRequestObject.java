@@ -1,4 +1,4 @@
-package io.github.jack1424.realtimeweather;
+package io.github.jack1424.realtimeweather.requests;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,10 +12,10 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class RequestObject {
+public class WeatherRequestObject {
 	private boolean rain = false, thunder = false;
 
-	public RequestObject(String apiKey, String lat, String lon) throws IOException, ParseException, ConfigurationException {
+	public WeatherRequestObject(String apiKey, String lat, String lon) throws IOException, ParseException, ConfigurationException {
 		URL url = new URL(String.format("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s", lat, lon, apiKey));
 
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();

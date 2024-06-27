@@ -1,11 +1,15 @@
 package io.github.jack1424.realtimeweather;
 
+import io.github.jack1424.realtimeweather.requests.WeatherRequestObject;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.json.simple.parser.ParseException;
 
 import javax.naming.ConfigurationException;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -16,7 +20,7 @@ public class Configurator {
 	private TimeZone timeZone;
 	private boolean debug, timeEnabled, weatherEnabled, blockTimeSetCommand, blockWeatherCommand, disableBedsAtNight, disableBedsDuringThunder;
 	private long timeSyncInterval, weatherSyncInterval;
-	private String apiKey, lat, lon, disableBedsAtNightMessage, disableBedsDuringThunderMessage;
+	private String sunriseSunset, sunriseSunsetLatitude, sunriseSunsetLongitude, apiKey, weatherLatitude, weatherLongitude, disableBedsAtNightMessage, disableBedsDuringThunderMessage, sunriseCustomTime, sunsetCustomTime;
 
 	public Configurator(RealTimeWeather rtw) {
 		this.rtw = rtw;
@@ -34,6 +38,14 @@ public class Configurator {
 				setDisableBedsAtNightMessage(configFile.getString("DisableBedsAtNightMessage"));
 				setTimeSyncInterval(configFile.getLong("TimeSyncInterval"));
 				setTimeZone(configFile.getString("Timezone"));
+				setSunriseSunset(configFile.getString("SunriseSunset"));
+				if (getSunriseSunset().equals("real")) {
+					setSunriseSunsetLatitude(configFile.getString("SunriseSunsetLatitude"));
+					setSunriseSunsetLongitude(configFile.getString("SunriseSunsetLongitude"));
+				} else if (getSunriseSunset().equals("custom")) {
+					setSunriseCustomTime(configFile.getString("SunriseCustomTime"));
+					setSunsetCustomTime(configFile.getString("SunsetCustomTime"));
+				}
 			} catch (ConfigurationException e) {
 				rtw.getLogger().severe((e.getMessage()));
 				rtw.getLogger().severe("Error loading time configuration. Check that the values in your configuration file are valid.");
@@ -50,8 +62,8 @@ public class Configurator {
 				setDisableBedsDuringThunderMessage(configFile.getString("DisableBedsDuringThunderMessage"));
 				setWeatherSyncInterval(configFile.getLong("WeatherSyncInterval"));
 				setAPIKey(configFile.getString("APIKey"));
-				setLat(configFile.getString("Latitude"));
-				setLon(configFile.getString("Longitude"));
+				setWeatherLatitude(configFile.getString("WeatherLatitude"));
+				setWeatherLongitude(configFile.getString("WeatherLongitude"));
 			} catch (ConfigurationException e) {
 				rtw.getLogger().severe(e.getMessage());
 				rtw.getLogger().severe("Error loading weather configuration. Check that the values in your configuration file are valid.");
@@ -132,6 +144,66 @@ public class Configurator {
 		rtw.debug("TimeZone set to " + value);
 	}
 
+	public String getSunriseSunset() {
+		return sunriseSunset;
+	}
+
+	public void setSunriseSunset(String value) throws ConfigurationException {
+		value = value.toLowerCase();
+		if (value.equals("default") || value.equals("real") || value.equals("custom")) {
+			sunriseSunset = value;
+			rtw.debug("SunriseSunset set to " + value);
+		} else {
+			throw new ConfigurationException("SunriseSunset value invalid (must be default or real or custom)");
+		}
+	}
+
+	public String getSunriseSunsetLatitude() {
+		return sunriseSunsetLatitude;
+	}
+
+	public void setSunriseSunsetLatitude(String value) {
+		sunriseSunsetLatitude = value;
+		rtw.debug("SunriseSunsetLatitude set to " + value);
+	}
+
+	public String getSunriseSunsetLongitude() {
+		return sunriseSunsetLongitude;
+	}
+
+	public void setSunriseSunsetLongitude(String value) {
+		sunriseSunsetLongitude = value;
+		rtw.debug("SunriseSunsetLongitude set to " + value);
+	}
+
+	public String getSunriseCustomTime() {
+		return sunriseCustomTime;
+	}
+
+	public void setSunriseCustomTime(String value) throws ConfigurationException {
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm:ss a");
+			sunriseCustomTime = LocalTime.parse(value, formatter).format(formatter);
+			rtw.debug("SunriseCustomTime set to " + value);
+		} catch (DateTimeParseException e) {
+			throw new ConfigurationException("SunriseCustomTime value invalid (check format)");
+		}
+	}
+
+	public String getSunsetCustomTime() {
+		return sunsetCustomTime;
+	}
+
+	public void setSunsetCustomTime(String value) throws ConfigurationException {
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm:ss a");
+			sunsetCustomTime = LocalTime.parse(value, formatter).format(formatter);
+			rtw.debug("SunsetCustomTime set to " + value);
+		} catch (DateTimeParseException e) {
+			throw new ConfigurationException("SunsetCustomTime value invalid (check format)");
+		}
+	}
+
 	public boolean isWeatherEnabled() {
 		return weatherEnabled;
 	}
@@ -186,7 +258,7 @@ public class Configurator {
 
 	public void setAPIKey(String value) throws ConfigurationException {
 		try {
-			new RequestObject(Objects.requireNonNull(value), "0", "0");
+			new WeatherRequestObject(Objects.requireNonNull(value), "0", "0");
 		} catch (NullPointerException e) {
 			throw new ConfigurationException("The APIKey cannot be blank");
 		}
@@ -199,11 +271,11 @@ public class Configurator {
 		rtw.debug("APIKey set to " + value);
 	}
 
-	public String getLat() {
-		return lat;
+	public String getWeatherLatitude() {
+		return weatherLatitude;
 	}
 
-	public void setLat(String value) throws ConfigurationException {
+	public void setWeatherLatitude(String value) throws ConfigurationException {
 		try {
 			double doubleValue = Double.parseDouble(Objects.requireNonNull(value));
 			if (doubleValue < -90 || doubleValue > 90)
@@ -214,15 +286,15 @@ public class Configurator {
 			throw new ConfigurationException("The entered latitude might not be a number (or is too long)");
 		}
 
-		lat = value;
+		weatherLatitude = value;
 		rtw.debug("Latitude set to " + value);
 	}
 
-	public String getLon() {
-		return lon;
+	public String getWeatherLongitude() {
+		return weatherLongitude;
 	}
 
-	public void setLon(String value) throws ConfigurationException {
+	public void setWeatherLongitude(String value) throws ConfigurationException {
 		try {
 			double doubleValue = Double.parseDouble(Objects.requireNonNull(value));
 			if (doubleValue < -180 || doubleValue > 180)
@@ -233,7 +305,7 @@ public class Configurator {
 			throw new ConfigurationException("The entered longitude might not be a number (or is too long)");
 		}
 
-		lon = value;
+		weatherLongitude = value;
 		rtw.debug("Longitude set to " + value);
 	}
 }

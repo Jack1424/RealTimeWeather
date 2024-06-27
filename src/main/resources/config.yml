@@ -22,6 +22,21 @@ TimeSyncInterval: 100
 # You can find a full list of timezones here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List      #
 Timezone: 'Etc/UTC'
 #                                                                                                                    #
+# Set to default to use "default" Minecraft sunrise/sunset times (always 5:02 AM and 6:36 PM respectfully)           #
+# Set to real to sync the sunrise/sunset times with a real world location (configure below)                          #
+# Set to custom to use custom sunrise/sunset times (configure below)                                                 #
+SunriseSunset: default
+# Enter the latitude and longitude of the location that you want to sync the sunrise and sunset with                 #
+# If you set this to a place with no sunrise/sunset (like the North Pole), the default times will be used            #
+# NOTE: You can find the latitude and longitude of a location at https://www.latlong.net/                            #
+# This feature is provided for free by SunriseSunset.io                                                              #
+SunriseSunsetLatitude: '0'
+SunriseSunsetLongitude: '0'
+# Enter the times that you would like to use for sunrise and sunset                                                  #
+# You MUST include the seconds (even if they're just 00)                                                             #
+# Sunrise is defined as 23041 ticks and sunset is 12610 ticks in-game                                                #
+SunriseCustomTime: '5:02:27 AM'
+SunsetCustomTime: '6:36:36 PM'
 ######################################################################################################################
 
 ################################# WEATHER SYNC SETTINGS ##############################################################
@@ -49,8 +64,8 @@ APIKey: 'API_KEY'
 #                                                                                                                    #
 # Enter the latitude and longitude of the location that you want to sync your world(s) weather with                  #
 # NOTE: You can find the latitude and longitude of a location at https://www.latlong.net/                            #
-Latitude: '0'
-Longitude: '0'
+WeatherLatitude: '0'
+WeatherLongitude: '0'
 #                                                                                                                    #
 ######################################################################################################################
 
