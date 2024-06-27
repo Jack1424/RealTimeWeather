@@ -16,7 +16,7 @@ public class EventHandler implements Listener {
 	}
 
 	@org.bukkit.event.EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onOperatorSet(PlayerCommandPreprocessEvent event) {
+	public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getMessage().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getMessage().contains("weather"))) {
 			event.setCancelled(true);
@@ -25,7 +25,7 @@ public class EventHandler implements Listener {
 	}
 
 	@org.bukkit.event.EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onOperatorSetConsole(ServerCommandEvent event) {
+	public void onConsoleCommand(ServerCommandEvent event) {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getCommand().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getCommand().contains("weather"))) {
 			event.setCancelled(true);
