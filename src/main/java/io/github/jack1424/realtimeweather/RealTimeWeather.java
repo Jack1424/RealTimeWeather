@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @SuppressWarnings("deprecation")
 public final class RealTimeWeather extends JavaPlugin {
 	private Logger logger;
-	private Configurator config;
+	private ConfigManager config;
 
 	@Override
 	public void onEnable() {
@@ -23,7 +23,7 @@ public final class RealTimeWeather extends JavaPlugin {
 
 		logger.info("Loading configuration...");
 		saveDefaultConfig();
-		config = new Configurator(this);
+		config = new ConfigManager(this);
 		config.refreshValues();
 
 		debug("TimeSync: " + config.isTimeEnabled());
@@ -167,7 +167,7 @@ public final class RealTimeWeather extends JavaPlugin {
 		}
 	}
 
-	public Configurator getConfigurator() {
+	public ConfigManager getConfigurator() {
 		return config;
 	}
 

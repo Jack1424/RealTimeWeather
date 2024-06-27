@@ -14,7 +14,7 @@ import java.time.zone.ZoneRulesException;
 import java.util.Objects;
 import java.util.TimeZone;
 
-public class Configurator {
+public class ConfigManager {
 	private final RealTimeWeather rtw;
 	private final FileConfiguration configFile;
 	private TimeZone timeZone;
@@ -22,7 +22,7 @@ public class Configurator {
 	private long timeSyncInterval, weatherSyncInterval;
 	private String sunriseSunset, sunriseSunsetLatitude, sunriseSunsetLongitude, apiKey, weatherLatitude, weatherLongitude, disableBedsAtNightMessage, disableBedsDuringThunderMessage, sunriseCustomTime, sunsetCustomTime;
 
-	public Configurator(RealTimeWeather rtw) {
+	public ConfigManager(RealTimeWeather rtw) {
 		this.rtw = rtw;
 		configFile = rtw.getConfig();
 	}
