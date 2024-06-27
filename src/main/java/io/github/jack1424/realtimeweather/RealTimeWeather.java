@@ -34,7 +34,7 @@ public final class RealTimeWeather extends JavaPlugin {
 		if (config.isWeatherEnabled())
 			setupWeather();
 
-		getServer().getPluginManager().registerEvents(new EventHandler(this), this);
+		getServer().getPluginManager().registerEvents(new EventHandlers(this), this);
 
 		debug("Enabling metrics...");
 		Metrics metrics = new Metrics(this, 16709);

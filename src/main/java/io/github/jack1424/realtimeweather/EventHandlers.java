@@ -2,20 +2,21 @@ package io.github.jack1424.realtimeweather;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
-public class EventHandler implements Listener {
-	private final Configurator config;
+public class EventHandlers implements Listener {
+	private final ConfigManager config;
 
-	public EventHandler(RealTimeWeather rtw) {
+	public EventHandlers(RealTimeWeather rtw) {
 		config = rtw.getConfigurator();
 	}
 
-	@org.bukkit.event.EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getMessage().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getMessage().contains("weather"))) {
@@ -24,7 +25,7 @@ public class EventHandler implements Listener {
 		}
 	}
 
-	@org.bukkit.event.EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onConsoleCommand(ServerCommandEvent event) {
 		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getCommand().contains("time set"))
 				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getCommand().contains("weather"))) {
@@ -33,7 +34,7 @@ public class EventHandler implements Listener {
 		}
 	}
 
-	@org.bukkit.event.EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerBedEnter(PlayerBedEnterEvent event) {
 		Player player = event.getPlayer();
 		World playerWorld = player.getWorld();
