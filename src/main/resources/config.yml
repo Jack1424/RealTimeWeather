@@ -3,6 +3,7 @@
 
 ################################# TIME SYNC SETTINGS #################################################################
 # Set to true to enable time syncing, or false to disable                                                            #
+# All time-related settings will be ignored if this is set to false                                                  #
 SyncTime: false
 #                                                                                                                    #
 # Set to false to enable the /time set command (not recommended)                                                     #
@@ -41,6 +42,7 @@ SunsetCustomTime: '6:36:36 PM'
 
 ################################# WEATHER SYNC SETTINGS ##############################################################
 # Set to true to enable weather syncing, or false to disable                                                         #
+# All weather-related settings will be ignored if this is set to false                                               #
 SyncWeather: false
 #                                                                                                                    #
 # Set to false to enable the /weather command (not recommended)                                                      #
@@ -53,7 +55,8 @@ DisableBedsDuringThunder: true
 DisableBedsDuringThunderMessage: ''
 #                                                                                                                    #
 # You can change the time between weather syncs from the default (5 minutes) below                                   #
-# Due to OpenWeather's restrictions, setting this value below 2400 (2 minutes) will cause problems                   #
+# Setting this value below 200 (10 seconds) is not recommended                                                       #
+# The minimum safe value on a free API plan is 40 (2 seconds)                                                        #
 # You can find a handy tick calculator here: https://mapmaking.fr/tick/                                              #
 WeatherSyncInterval: 6000
 #                                                                                                                    #
@@ -71,7 +74,7 @@ WeatherLongitude: '0'
 
 # Set to true for various console messages when time and weather sync are executed
 # This is useful if the plugin is not working, and you want to find out what's wrong
-# This will also provide java error messages when an error is caught and managed by RTM
+# This will also provide error messages even when an error is caught and managed by RTM
 # Note: There will be no messages during a time sync because they happen very frequently
 # Note: Unhandled plugin errors will still be logged regardless of the debug value
 Debug: false
