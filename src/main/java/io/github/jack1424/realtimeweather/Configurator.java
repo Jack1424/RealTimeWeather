@@ -191,7 +191,7 @@ public class Configurator {
 			throw new ConfigurationException("The APIKey cannot be blank");
 		}
 		catch (IOException | ParseException e) {
-			e.printStackTrace();
+			rtw.getLogger().severe(e.getMessage());
 			throw new ConfigurationException("There was an error when validating this APIKey (this does not mean that the API key is invalid)");
 		}
 
