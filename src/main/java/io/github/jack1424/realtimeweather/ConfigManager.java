@@ -1,6 +1,7 @@
 package io.github.jack1424.realtimeweather;
 
 import io.github.jack1424.realtimeweather.requests.WeatherRequestObject;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.json.simple.parser.ParseException;
 
@@ -11,6 +12,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -18,9 +20,10 @@ public class ConfigManager {
 	private final RealTimeWeather rtw;
 	private final FileConfiguration configFile;
 	private TimeZone timeZone;
-	private boolean debug, timeEnabled, weatherEnabled, blockTimeSetCommand, blockWeatherCommand, disableBedsAtNight, disableBedsDuringThunder;
-	private long timeSyncInterval, weatherSyncInterval;
+	private boolean debug, timeEnabled, weatherEnabled, timeSyncAllWorlds, weatherSyncAllWorlds, blockTimeSetCommand, blockWeatherCommand, disableBedsAtNight, disableBedsDuringThunder;
+	private long updateCheckInterval, timeSyncInterval, weatherSyncInterval;
 	private String sunriseSunset, sunriseSunsetLatitude, sunriseSunsetLongitude, apiKey, weatherLatitude, weatherLongitude, disableBedsAtNightMessage, disableBedsDuringThunderMessage, sunriseCustomTime, sunsetCustomTime;
+	private HashSet<World> timeSyncWorlds, weatherSyncWorlds;
 
 	public ConfigManager(RealTimeWeather rtw) {
 		this.rtw = rtw;
@@ -33,6 +36,16 @@ public class ConfigManager {
 		setTimeEnabled(configFile.getBoolean("SyncTime"));
 		if (isTimeEnabled())
 			try {
+				timeSyncWorlds = new HashSet<>();
+				setTimeSyncAllWorlds(configFile.getBoolean("TimeSyncAllWorlds"));
+				if (getTimeSyncAllWorlds()) {
+					for (World world : rtw.getServer().getWorlds())
+						if (world.getEnvironment() == World.Environment.NORMAL)
+							addTimeSyncWorld(world.getName());
+				} else {
+					for (String worldName : configFile.getStringList("TimeSyncWorlds"))
+						addTimeSyncWorld(worldName);
+				}
 				setBlockTimeSetCommand(configFile.getBoolean("BlockTimeSetCommand"));
 				setDisableBedsAtNight(configFile.getBoolean("DisableBedsAtNight"));
 				setDisableBedsAtNightMessage(configFile.getString("DisableBedsAtNightMessage"));
@@ -57,6 +70,16 @@ public class ConfigManager {
 		setWeatherEnabled(configFile.getBoolean("SyncWeather"));
 		if (isWeatherEnabled())
 			try {
+				weatherSyncWorlds = new HashSet<>();
+				setWeatherSyncAllWorlds(configFile.getBoolean("WeatherSyncAllWorlds"));
+				if (getWeatherSyncAllWorlds()) {
+					for (World world : rtw.getServer().getWorlds())
+						if (world.getEnvironment() == World.Environment.NORMAL)
+							addWeatherSyncWorld(world.getName());
+				} else {
+					for (String worldName : configFile.getStringList("WeatherSyncWorlds"))
+						addWeatherSyncWorld(worldName);
+				}
 				setBlockWeatherCommand(configFile.getBoolean("BlockWeatherCommand"));
 				setDisableBedsDuringThunder(configFile.getBoolean("DisableBedsDuringThunder"));
 				setDisableBedsDuringThunderMessage(configFile.getString("DisableBedsDuringThunderMessage"));
@@ -71,6 +94,17 @@ public class ConfigManager {
 
 				setWeatherEnabled(false);
 			}
+
+		setUpdateCheckInterval(configFile.getLong("UpdateCheckInterval"));
+	}
+
+	public long getUpdateCheckInterval() {
+		return updateCheckInterval;
+	}
+
+	public void setUpdateCheckInterval(long value) {
+		updateCheckInterval = value;
+		rtw.debug("updateCheckInterval set to " + value);
 	}
 
 	public boolean debugEnabled() {
@@ -89,6 +123,29 @@ public class ConfigManager {
 	public void setTimeEnabled(boolean value) {
 		timeEnabled = value;
 		rtw.debug("SyncTime set to " + value);
+	}
+
+	public boolean getTimeSyncAllWorlds() {
+		return timeSyncAllWorlds;
+	}
+
+	public void setTimeSyncAllWorlds(boolean value) {
+		timeSyncAllWorlds = value;
+		rtw.debug("TimeSyncAllWorlds set to " + value);
+	}
+
+	public HashSet<World> getTimeSyncWorlds() {
+		return timeSyncWorlds;
+	}
+
+	public void addTimeSyncWorld(String worldName) throws ConfigurationException {
+		World world = rtw.getServer().getWorld(worldName);
+
+		if (world == null)
+			throw new ConfigurationException("World \"" + worldName + "\" cannot be found");
+
+		timeSyncWorlds.add(world);
+		rtw.debug("World \"" + worldName + "\" added to TimeSyncWorlds");
 	}
 
 	public boolean getBlockTimeSetCommand() {
@@ -211,6 +268,29 @@ public class ConfigManager {
 	public void setWeatherEnabled(boolean value) {
 		weatherEnabled = value;
 		rtw.debug("SyncWeather set to " + value);
+	}
+
+	public boolean getWeatherSyncAllWorlds() {
+		return weatherSyncAllWorlds;
+	}
+
+	public void setWeatherSyncAllWorlds(boolean value) {
+		weatherSyncAllWorlds = value;
+		rtw.debug("WeatherSyncAllWorlds set to " + value);
+	}
+
+	public HashSet<World> getWeatherSyncWorlds() {
+		return weatherSyncWorlds;
+	}
+
+	public void addWeatherSyncWorld(String worldName) throws ConfigurationException {
+		World world = rtw.getServer().getWorld(worldName);
+
+		if (world == null)
+			throw new ConfigurationException("World \"" + worldName + "\" cannot be found");
+
+		weatherSyncWorlds.add(world);
+		rtw.debug("World \"" + worldName + "\" added to WeatherSyncWorlds");
 	}
 
 	public boolean getBlockWeatherCommand() {
