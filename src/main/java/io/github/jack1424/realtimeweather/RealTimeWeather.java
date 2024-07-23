@@ -108,9 +108,13 @@ public final class RealTimeWeather extends JavaPlugin {
 						world.setTime(calculateWorldTime(cal, "5:02:27 AM", "6:36:36 PM"));
 			}
 		}, 0L, config.getTimeSyncInterval());
+
+		debug("Weather sync enabled");
 	}
 
 	private void setupWeather() {
+		debug("Enabling weather sync...");
+
 		try {
 			new WeatherRequestObject(config.getAPIKey(), config.getWeatherLatitude(), config.getWeatherLongitude());
 		} catch (Exception e) {
