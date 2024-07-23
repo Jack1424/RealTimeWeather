@@ -72,7 +72,7 @@ public class ConfigManager {
 				setWeatherEnabled(false);
 			}
 
-		setUpdateCheckInterval(configFile.getLong("updateCheckInterval"));
+		setUpdateCheckInterval(configFile.getLong("UpdateCheckInterval"));
 	}
 
 	public boolean debugEnabled() {
