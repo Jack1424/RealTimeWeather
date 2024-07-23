@@ -106,9 +106,9 @@ public final class RealTimeWeather extends JavaPlugin {
 								world.setTime(calculateWorldTime(cal, "5:02:27 AM", "6:36:36 PM"));
 								return;
 							}
-						} else if (config.getSunriseSunset().equals("custom"))
+						} else if (config.getSunriseSunset().equals("custom")) {
 							world.setTime(calculateWorldTime(cal, config.getSunriseCustomTime(), config.getSunsetCustomTime()));
-						else
+						} else
 							world.setTime(calculateWorldTime(cal, "5:02:27 AM", "6:36:36 PM"));
 			}
 		}, 0L, config.getTimeSyncInterval());
@@ -170,9 +170,9 @@ public final class RealTimeWeather extends JavaPlugin {
 		if (currentMinutes >= sunriseMinutes && currentMinutes < sunsetMinutes) {
 			return ((currentMinutes - sunriseMinutes) / (sunsetMinutes - sunriseMinutes) * 13569) + 23041;
 		} else {
-			if (currentMinutes < sunriseMinutes) {
+			if (currentMinutes < sunriseMinutes)
 				currentMinutes += 1440;
-			}
+
 			return ((currentMinutes - sunsetMinutes) / (1440 - sunsetMinutes + sunriseMinutes) * 13569) + 12610;
 		}
 	}

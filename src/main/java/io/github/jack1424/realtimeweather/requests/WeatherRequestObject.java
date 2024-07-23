@@ -33,7 +33,6 @@ public class WeatherRequestObject {
 
 		for (Object rawCondition : conditions) {
 			int id = Integer.parseInt(String.valueOf(((JSONObject) rawCondition).get("id")));
-
 			while (id >= 10)
 				id /= 10;
 
