@@ -77,37 +77,35 @@ public final class RealTimeWeather extends JavaPlugin {
 		if (config.getSunriseSunset().equals("custom"))
 			debug("Using custom sunrise/sunset times. Sunrise: " + config.getSunriseCustomTime() + ", Sunset: " + config.getSunsetCustomTime());
 
-		for (World world : getServer().getWorlds())
-			if (world.getEnvironment().equals(World.Environment.NORMAL))
-				world.setGameRuleValue("doDaylightCycle", "false");
+		for (World world : config.getTimeSyncWorlds())
+			world.setGameRuleValue("doDaylightCycle", "false");
 
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			if (config.isTimeEnabled()) {
 				Calendar cal = Calendar.getInstance(config.getTimeZone());
-				for (World world : getServer().getWorlds())
-					if (world.getEnvironment().equals(World.Environment.NORMAL))
-						if (config.getSunriseSunset().equals("real")) {
-							SunriseSunsetRequestObject sunriseSunset;
+				for (World world : config.getTimeSyncWorlds())
+					if (config.getSunriseSunset().equals("real")) {
+						SunriseSunsetRequestObject sunriseSunset;
+						try {
+							sunriseSunset = new SunriseSunsetRequestObject(config.getTimeZone(), config.getWeatherLatitude(), config.getWeatherLongitude());
+							world.setTime(calculateWorldTime(cal, sunriseSunset.getSunriseTime(), sunriseSunset.getSunsetTime()));
+						} catch (Exception e) {
+							logger.severe(e.getMessage());
+							logger.severe("Error getting sunrise/sunset times, using default sunrise/sunset times");
+
 							try {
-								sunriseSunset = new SunriseSunsetRequestObject(config.getTimeZone(), config.getWeatherLatitude(), config.getWeatherLongitude());
-								world.setTime(calculateWorldTime(cal, sunriseSunset.getSunriseTime(), sunriseSunset.getSunsetTime()));
-							} catch (Exception e) {
-								logger.severe(e.getMessage());
-								logger.severe("Error getting sunrise/sunset times, using default sunrise/sunset times");
-
-								try {
-									config.setSunriseSunset("default");
-								} catch (ConfigurationException ex) {
-									throw new RuntimeException(ex);
-								}
-
-								world.setTime(calculateWorldTime(cal, "5:02:27 AM", "6:36:36 PM"));
-								return;
+								config.setSunriseSunset("default");
+							} catch (ConfigurationException ex) {
+								throw new RuntimeException(ex);
 							}
-						} else if (config.getSunriseSunset().equals("custom")) {
-							world.setTime(calculateWorldTime(cal, config.getSunriseCustomTime(), config.getSunsetCustomTime()));
-						} else
+
 							world.setTime(calculateWorldTime(cal, "5:02:27 AM", "6:36:36 PM"));
+							return;
+						}
+					} else if (config.getSunriseSunset().equals("custom")) {
+						world.setTime(calculateWorldTime(cal, config.getSunriseCustomTime(), config.getSunsetCustomTime()));
+					} else
+						world.setTime(calculateWorldTime(cal, "5:02:27 AM", "6:36:36 PM"));
 			}
 		}, 0L, config.getTimeSyncInterval());
 	}
@@ -123,11 +121,8 @@ public final class RealTimeWeather extends JavaPlugin {
 			return;
 		}
 		
-		for (World world : getServer().getWorlds())
-			if (world.getEnvironment().equals(World.Environment.NORMAL))
-				world.setGameRuleValue("doWeatherCycle", "false");
-
-		debug("Enabling weather sync...");
+		for (World world : config.getWeatherSyncWorlds())
+			world.setGameRuleValue("doWeatherCycle", "false");
 
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			debug("Syncing weather...");
@@ -136,11 +131,10 @@ public final class RealTimeWeather extends JavaPlugin {
 				WeatherRequestObject request = new WeatherRequestObject(config.getAPIKey(), config.getWeatherLatitude(), config.getWeatherLongitude());
 
 				debug("Setting weather (Rain: " + request.isRaining() + ", Thunder: " + request.isThundering() + ")...");
-				for (World world : getServer().getWorlds())
-					if (world.getEnvironment().equals(World.Environment.NORMAL)) {
-						world.setStorm(request.isRaining());
-						world.setThundering(request.isThundering());
-					}
+				for (World world : config.getWeatherSyncWorlds()) {
+					world.setStorm(request.isRaining());
+					world.setThundering(request.isThundering());
+				}
 			} catch (Exception e) {
 				logger.severe("There was an error when attempting to get weather information");
 				debug(e.getMessage());

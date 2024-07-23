@@ -21,6 +21,17 @@ Debug: false
 # All time-related settings will be ignored if this is set to false                                                  #
 SyncTime: false
 #                                                                                                                    #
+# By default, RealTimeWeather will apply the time sync settings below to all worlds                                  #
+# End and nether worlds will not be synced                                                                           #
+# If you ony want to enable time syncing in some worlds on your server, set this to false                            #
+TimeSyncAllWorlds: true
+#                                                                                                                    #
+# List the worlds that you want RealTimeWeather to sync the time in                                                  #
+# End and nether worlds will not be synced                                                                           #
+# This only works if TimeSyncAllWorlds is set to false                                                               #
+TimeSyncWorlds:
+  - world
+#                                                                                                                    #
 # Set to false to enable the /time set command (not recommended)                                                     #
 BlockTimeSetCommand: true
 #                                                                                                                    #
@@ -59,6 +70,17 @@ SunsetCustomTime: '6:36:36 PM'
 # Set to true to enable weather syncing, or false to disable                                                         #
 # All weather-related settings will be ignored if this is set to false                                               #
 SyncWeather: false
+#                                                                                                                    #
+# By default, RealTimeWeather will apply the weather sync settings below to all worlds                               #
+# End and nether worlds will not be synced                                                                           #
+# If you ony want to enable weather syncing in some worlds on your server, set this to false                         #
+WeatherSyncAllWorlds: true
+#                                                                                                                    #
+# List the worlds that you want RealTimeWeather to sync the weather in                                               #
+# End and nether worlds will not be synced                                                                           #
+# This only works if WeatherSyncAllWorlds is set to false                                                            #
+WeatherSyncWorlds:
+  - world
 #                                                                                                                    #
 # Set to false to enable the /weather command (not recommended)                                                      #
 BlockWeatherCommand: true
