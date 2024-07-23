@@ -43,6 +43,15 @@ public final class RealTimeWeather extends JavaPlugin {
 		metrics.addCustomChart(new SimplePie("time_sync_enabled", () -> String.valueOf(config.isTimeEnabled())));
 
 		logger.info("Started!");
+
+		logger.info("Checking for updates...");
+		logger.info(getUpdateCheck());
+
+		long updateCheckInterval = config.getUpdateCheckInterval();
+		if (config.getUpdateCheckInterval() > 0)
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,  () -> {
+				logger.info(getUpdateCheck());
+			}, updateCheckInterval, updateCheckInterval);
 	}
 
 	@Override
@@ -166,6 +175,23 @@ public final class RealTimeWeather extends JavaPlugin {
 			}
 			return ((currentMinutes - sunsetMinutes) / (1440 - sunsetMinutes + sunriseMinutes) * 13569) + 12610;
 		}
+	}
+
+	public String getUpdateCheck() {
+		String currentVersion = this.getDescription().getVersion();
+		String latestVersion;
+		try {
+			debug("Getting latest version...");
+			latestVersion = RequestFunctions.getLatestVersion();
+		} catch (Exception exception) {
+			debug(exception.getMessage());
+			return "There was an error getting the latest version";
+		}
+
+		if (currentVersion.equals(latestVersion)) {
+			return String.format("RealTimeWeather (v%s) is up to date!", currentVersion);
+		} else
+			return String.format("RealTimeWeather (v%s) is outdated! v%s is the latest version.", currentVersion, latestVersion);
 	}
 
 	public ConfigManager getConfigurator() {

@@ -19,7 +19,7 @@ public class ConfigManager {
 	private final FileConfiguration configFile;
 	private TimeZone timeZone;
 	private boolean debug, timeEnabled, weatherEnabled, blockTimeSetCommand, blockWeatherCommand, disableBedsAtNight, disableBedsDuringThunder;
-	private long timeSyncInterval, weatherSyncInterval;
+	private long timeSyncInterval, weatherSyncInterval, updateCheckInterval;
 	private String sunriseSunset, sunriseSunsetLatitude, sunriseSunsetLongitude, apiKey, weatherLatitude, weatherLongitude, disableBedsAtNightMessage, disableBedsDuringThunderMessage, sunriseCustomTime, sunsetCustomTime;
 
 	public ConfigManager(RealTimeWeather rtw) {
@@ -71,6 +71,8 @@ public class ConfigManager {
 
 				setWeatherEnabled(false);
 			}
+
+		setUpdateCheckInterval(configFile.getLong("updateCheckInterval"));
 	}
 
 	public boolean debugEnabled() {
@@ -307,5 +309,14 @@ public class ConfigManager {
 
 		weatherLongitude = value;
 		rtw.debug("Longitude set to " + value);
+	}
+
+	public void setUpdateCheckInterval(long value) {
+		updateCheckInterval = value;
+		rtw.debug("updateCheckInterval set to " + value);
+	}
+
+	public long getUpdateCheckInterval() {
+		return updateCheckInterval;
 	}
 }

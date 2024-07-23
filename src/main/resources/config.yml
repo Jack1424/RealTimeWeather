@@ -1,4 +1,4 @@
-# RealTimeWeather Configuration File (v1.3.0)
+# RealTimeWeather Configuration File (v1.4.0)
 # You can find detailed instructions at: https://github.com/Jack1424/RealTimeWeather/wiki#editing-the-configuration-file
 
 ################################# TIME SYNC SETTINGS #################################################################
@@ -71,6 +71,12 @@ WeatherLatitude: '0'
 WeatherLongitude: '0'
 #                                                                                                                    #
 ######################################################################################################################
+
+# By default, RealTimeWeather will check if an update is available every 24 hours (1734000 ticks)
+# You can change the interval here (or set to 0 to disable update checks)
+# If this is disabled, RealTimeWeather will still check for updates on startup
+# You can find a handy tick calculator here: https://mapmaking.fr/tick/
+updateCheckInterval: 1734000
 
 # Set to true for various console messages when time and weather sync are executed
 # This is useful if the plugin is not working, and you want to find out what's wrong
