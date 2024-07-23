@@ -9,6 +9,7 @@ ___
 - Supports all Minecraft versions from 1.7+
 - Constant time syncing (including custom or real-world sunrise/sunset times)
 - Weather syncing (rain/snow and thunder)
+- Enable/disable specific worlds
 
 **Upcoming Features:**
 - [ ] Commands
