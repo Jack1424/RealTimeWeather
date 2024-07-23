@@ -186,7 +186,7 @@ public final class RealTimeWeather extends JavaPlugin {
 			return String.format("RealTimeWeather (v%s) is outdated! v%s is the latest version.", currentVersion, latestVersion);
 	}
 
-	public ConfigManager getConfigurator() {
+	public ConfigManager getConfigManager() {
 		return config;
 	}
 

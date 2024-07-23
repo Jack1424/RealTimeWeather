@@ -13,7 +13,7 @@ public class EventHandlers implements Listener {
 	private final ConfigManager config;
 
 	public EventHandlers(RealTimeWeather rtw) {
-		config = rtw.getConfigurator();
+		config = rtw.getConfigManager();
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
