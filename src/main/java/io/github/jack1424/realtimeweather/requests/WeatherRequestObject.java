@@ -36,10 +36,8 @@ public class WeatherRequestObject {
 			while (id >= 10)
 				id /= 10;
 
-			if (!rain)
-				rain = id == 2 || id == 3 || id == 5 || id == 6;
-			if (!thunder)
-				thunder = id == 2;
+			rain = id == 2 || id == 3 || id == 5 || id == 6;
+			thunder = id == 2;
 		}
 	}
 
