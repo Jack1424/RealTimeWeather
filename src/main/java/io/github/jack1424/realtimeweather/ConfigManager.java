@@ -310,13 +310,4 @@ public class ConfigManager {
 		weatherLongitude = value;
 		rtw.debug("Longitude set to " + value);
 	}
-
-	public void setUpdateCheckInterval(long value) {
-		updateCheckInterval = value;
-		rtw.debug("updateCheckInterval set to " + value);
-	}
-
-	public long getUpdateCheckInterval() {
-		return updateCheckInterval;
-	}
 }
