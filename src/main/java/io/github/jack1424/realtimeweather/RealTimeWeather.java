@@ -49,9 +49,7 @@ public final class RealTimeWeather extends JavaPlugin {
 
 		long updateCheckInterval = config.getUpdateCheckInterval();
 		if (config.getUpdateCheckInterval() > 0)
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,  () -> {
-				logger.info(getUpdateCheck());
-			}, updateCheckInterval, updateCheckInterval);
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,  () -> logger.info(getUpdateCheck()), updateCheckInterval, updateCheckInterval);
 	}
 
 	@Override
