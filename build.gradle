@@ -24,7 +24,19 @@ dependencies {
 }
 
 shadowJar {
-    relocate('org.bstats', 'io.github.jack1424.realtimeweather')
+    relocate('org.bstats', 'io.github.jack1424.realTimeWeather')
+}
+
+tasks.jar {
+    manifest {
+        attributes["paperweight-mappings-namespace"] = "mojang"
+    }
+}
+
+tasks.shadowJar {
+    manifest {
+        attributes["paperweight-mappings-namespace"] = "mojang"
+    }
 }
 
 def targetJavaVersion = 21

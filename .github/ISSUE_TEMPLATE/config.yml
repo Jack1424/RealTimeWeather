@@ -1,1 +1,3 @@
+#file: noinspection YAMLSchemaValidation
+#IntelliJ IDEA interprets this as another issue template so the above line is required
 blank_issues_enabled: false

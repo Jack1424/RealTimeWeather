@@ -7,16 +7,18 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
 
 public class RequestFunctions {
-	public static Object makeRequest(String URLString) throws IOException, HTTPResponseException, ParseException {
+	public static Object makeRequest(String URLString) throws IOException, HTTPResponseException, ParseException, URISyntaxException {
 		int responseCode = getResponseCode(URLString);
 		if (responseCode > 399)
 			throw new HTTPResponseException(responseCode);
 
-		Scanner scanner = new Scanner(new URL(URLString).openStream());
+		Scanner scanner = new Scanner(new URI(URLString).toURL().openStream());
 		StringBuilder response = new StringBuilder();
 		while (scanner.hasNextLine())
 			response.append(scanner.nextLine());
@@ -25,8 +27,8 @@ public class RequestFunctions {
 		return new JSONParser().parse(response.toString());
 	}
 
-	public static int getResponseCode(String URLString) throws IOException {
-		URL url = new URL(URLString);
+	public static int getResponseCode(String URLString) throws IOException, URISyntaxException {
+		URL url = new URI(URLString).toURL();
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.connect();
@@ -34,7 +36,7 @@ public class RequestFunctions {
 	}
 
 	public static String getLatestVersion() throws Exception {
-		return ((JSONObject) ((JSONArray) makeRequest("https://api.modrinth.com/v2/project/WRA6ODcm/version")).get(0)).get("version_number").toString();
+		return ((JSONObject) ((JSONArray) makeRequest("https://api.modrinth.com/v2/project/WRA6ODcm/version")).getFirst()).get("version_number").toString();
 	}
 
 	public static class HTTPResponseException extends Exception {
