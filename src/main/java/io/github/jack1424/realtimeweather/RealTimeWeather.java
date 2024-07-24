@@ -173,8 +173,9 @@ public final class RealTimeWeather extends JavaPlugin {
 		}
 	}
 
+	@SuppressWarnings("UnstableApiUsage")
 	public String getUpdateCheck() {
-		String currentVersion = this.getDescription().getVersion();
+		String currentVersion = this.getPluginMeta().getVersion();
 		String latestVersion;
 		try {
 			debug("Getting latest version...");
