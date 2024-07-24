@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 
 import javax.naming.ConfigurationException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -342,7 +343,7 @@ public class ConfigManager {
 		} catch (NullPointerException e) {
 			throw new ConfigurationException("The APIKey cannot be blank");
 		}
-		catch (IOException | ParseException e) {
+		catch (IOException | ParseException | URISyntaxException e) {
 			rtw.getLogger().severe(e.getMessage());
 			throw new ConfigurationException("There was an error when validating this APIKey (this does not mean that the API key is invalid)");
 		}
