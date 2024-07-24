@@ -1,6 +1,6 @@
-package io.github.jack1424.realtimeweather;
+package io.github.jack1424.realTimeWeather;
 
-import io.github.jack1424.realtimeweather.requests.*;
+import io.github.jack1424.realTimeWeather.requests.*;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.World;
@@ -11,7 +11,6 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
-@SuppressWarnings("deprecation")
 public final class RealTimeWeather extends JavaPlugin {
 	private Logger logger;
 	private ConfigManager config;
@@ -124,7 +123,7 @@ public final class RealTimeWeather extends JavaPlugin {
 			config.setWeatherEnabled(false);
 			return;
 		}
-		
+
 		for (World world : config.getWeatherSyncWorlds())
 			world.setGameRuleValue("doWeatherCycle", "false");
 

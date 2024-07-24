@@ -1,4 +1,4 @@
-package io.github.jack1424.realtimeweather;
+package io.github.jack1424.realTimeWeather;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;

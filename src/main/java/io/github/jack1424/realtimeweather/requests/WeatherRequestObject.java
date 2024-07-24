@@ -1,4 +1,4 @@
-package io.github.jack1424.realtimeweather.requests;
+package io.github.jack1424.realTimeWeather.requests;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

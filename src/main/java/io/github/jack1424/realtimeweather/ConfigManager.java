@@ -1,6 +1,6 @@
-package io.github.jack1424.realtimeweather;
+package io.github.jack1424.realTimeWeather;
 
-import io.github.jack1424.realtimeweather.requests.WeatherRequestObject;
+import io.github.jack1424.realTimeWeather.requests.WeatherRequestObject;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.json.simple.parser.ParseException;
