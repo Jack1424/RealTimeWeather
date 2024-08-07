@@ -161,15 +161,17 @@ public final class RealTimeWeather extends JavaPlugin {
 			sunsetMinutes += 720;
 
 		LocalTime currentTime = LocalTime.of(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-		int currentMinutes = currentTime.getHour() * 60 + currentTime.getMinute();
+		double currentMinutes = currentTime.getHour() * 60 + currentTime.getMinute();
 
 		if (currentMinutes >= sunriseMinutes && currentMinutes < sunsetMinutes) {
-			return ((currentMinutes - sunriseMinutes) / (sunsetMinutes - sunriseMinutes) * 13569) + 23041;
+			double daytimeFraction=(currentMinutes - sunriseMinutes) / (sunsetMinutes - sunriseMinutes);
+			return (long) (daytimeFraction * 13569) + 23041;
 		} else {
 			if (currentMinutes < sunriseMinutes)
 				currentMinutes += 1440;
-
-			return ((currentMinutes - sunsetMinutes) / (1440 - sunsetMinutes + sunriseMinutes) * 13569) + 12610;
+			
+			double nighttimeFraction=(currentMinutes - sunsetMinutes) / (1440 - sunsetMinutes + sunriseMinutes);
+			return (long)(nighttimeFraction * 13569) + 12610;
 		}
 	}
 
