@@ -164,12 +164,12 @@ public final class RealTimeWeather extends JavaPlugin {
 		int currentMinutes = currentTime.getHour() * 60 + currentTime.getMinute();
 
 		if (currentMinutes >= sunriseMinutes && currentMinutes < sunsetMinutes) {
-			return ((currentMinutes - sunriseMinutes) / (sunsetMinutes - sunriseMinutes) * 13569) + 23041;
+			return (long) (((currentMinutes - sunriseMinutes) / (sunsetMinutes - sunriseMinutes)) * 13569) + 23041;
 		} else {
 			if (currentMinutes < sunriseMinutes)
 				currentMinutes += 1440;
 
-			return ((currentMinutes - sunsetMinutes) / (1440 - sunsetMinutes + sunriseMinutes) * 13569) + 12610;
+			return (long) (((currentMinutes - sunsetMinutes) / (1440 - sunsetMinutes + sunriseMinutes)) * 13569) + 12610;
 		}
 	}
 
