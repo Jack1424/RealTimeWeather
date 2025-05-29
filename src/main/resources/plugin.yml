@@ -1,6 +1,6 @@
 name: RealTimeWeather
 version: '${version}'
-main: io.github.jack1424.realTimeWeather.RealTimeWeather
+main: io.github.jack1424.realtimeweather.RealTimeWeather
 description: Sync your Minecraft server's time and weather with the real world
 author: Jack1424
 load: POSTWORLD
