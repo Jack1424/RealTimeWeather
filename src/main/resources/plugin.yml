@@ -1,8 +1,9 @@
-main: io.github.jack1424.realTimeWeather.RealTimeWeather
 name: RealTimeWeather
 version: '${version}'
+main: io.github.jack1424.realTimeWeather.RealTimeWeather
 description: Sync your Minecraft server's time and weather with the real world
-api-version: '1.21'
-load: POSTWORLD
 author: Jack1424
-website: github.com/Jack1424/RealTimeWeather
+load: POSTWORLD
+website: https://github.com/Jack1424/RealTimeWeather
+api-version: '1.21.5'
+folia-supported: true

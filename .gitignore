@@ -1,23 +1,36 @@
-# User-specific IDEA files
-.idea
+# =====================================
+# RealTimeWeather – Git ignore rules
+# =====================================
+
+# Gradle build & cache
+.gradle/
+build/
+
+# Gradle Wrapper – keep only the two required files
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+gradle/wrapper/*
+
+# IDEs
+# IntelliJ IDEA
+.idea/
 *.iml
-
-# Gradle build files
-.gradle
-**/build/
-!src/**/build/
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Avoid ignore Gradle wrappper properties
-!gradle-wrapper.properties
-
-# Cache of project
-.gradletasknamecache
-
-# Eclipse Gradle plugin generated files
-# Eclipse Core
+# VS Code
+.vscode/
+# Eclipse
 .project
-# JDT-specific (Eclipse Java Development Tools)
 .classpath
+.settings/
+
+# Generated output folders
+out/
+bin/
+
+# MacOS
+.DS_Store
+
+# Temp files
+*~
+*.swp
+*.tmp
+*.bak
