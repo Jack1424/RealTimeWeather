@@ -24,7 +24,9 @@ dependencies {
 }
 
 shadowJar {
-    relocate('org.bstats', 'io.github.jack1424.realTimeWeather')
+    archiveClassifier.set('')
+    relocate('org.bstats', 'io.github.jack1424.realTimeWeather.libs.bstats')
+    minimize()
 }
 
 tasks.jar {
