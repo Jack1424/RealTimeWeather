@@ -1,5 +1,8 @@
+import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
+
 plugins {
     id 'java'
+    id 'io.papermc.paperweight.userdev' version '2.0.0-beta.17'
     id 'com.gradleup.shadow' version '8.3.6'
 }
 
@@ -15,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT'
+    paperweight.paperDevBundle('1.21.5-R0.1-SNAPSHOT')
     implementation 'org.bstats:bstats-bukkit:3.1.0'
 }
 
@@ -26,15 +29,11 @@ shadowJar {
 }
 
 tasks.jar {
-    manifest {
-        attributes['paperweight-mappings-namespace'] = 'mojang'
-    }
+    paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
 }
 
 tasks.shadowJar {
-    manifest {
-        attributes['paperweight-mappings-namespace'] = 'mojang'
-    }
+    paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
 }
 
 java {
