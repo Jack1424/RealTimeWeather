@@ -87,7 +87,7 @@ public final class RealTimeWeather extends JavaPlugin {
 					if (config.getSunriseSunset().equals("real")) {
 						SunriseSunsetRequestObject sunriseSunset;
 						try {
-							sunriseSunset = new SunriseSunsetRequestObject(config.getTimeZone(), config.getWeatherLatitude(), config.getWeatherLongitude());
+							sunriseSunset = new SunriseSunsetRequestObject(config.getTimeZone(), config.getSunriseSunsetLatitude(), config.getSunriseSunsetLongitude());
 							world.setTime(calculateWorldTime(cal, sunriseSunset.getSunriseTime(), sunriseSunset.getSunsetTime()));
 						} catch (Exception e) {
 							logger.severe(e.getMessage());
