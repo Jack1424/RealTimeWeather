@@ -12,7 +12,6 @@ version = '2.0.0-DEV'
 repositories {
     mavenCentral()
     maven {
-        name = 'papermc-repo'
         url = 'https://repo.papermc.io/repository/maven-public/'
     }
 }
