@@ -18,8 +18,8 @@ public class EventHandlers implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getMessage().contains("time set"))
-				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getMessage().contains("weather"))) {
+		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getMessage().toLowerCase().contains("time set "))
+				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getMessage().toLowerCase().contains("weather "))) {
 			event.setCancelled(true);
 			event.getPlayer().sendMessage("Command disabled by RealTimeWeather");
 		}
@@ -27,8 +27,8 @@ public class EventHandlers implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onConsoleCommand(ServerCommandEvent event) {
-		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getCommand().contains("time set"))
-				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getCommand().contains("weather"))) {
+		if ((config.getBlockTimeSetCommand() && config.isTimeEnabled() && event.getCommand().toLowerCase().contains("time set "))
+				|| (config.getBlockWeatherCommand() && config.isWeatherEnabled() && event.getCommand().toLowerCase().contains("weather "))) {
 			event.setCancelled(true);
 			event.getSender().sendMessage("Command disabled by RealTimeWeather");
 		}
