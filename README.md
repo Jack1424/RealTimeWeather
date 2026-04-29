@@ -1,7 +1,3 @@
-> [!NOTE]
-> I've been really busy recently and haven't had as much time as I need to work on this project.
-> I'm aware of the current issues and have plans for new features and improvements. I will return to this project soon.
-
 ![4SplitSingleLineCloseColors](https://raw.githubusercontent.com/Jack1424/RealTimeWeather/master/media/4SplitColors.png)
 [![Build Status](https://app.travis-ci.com/Jack1424/RealTimeWeather.svg?branch=master)](https://app.travis-ci.com/Jack1424/RealTimeWeather)
 
