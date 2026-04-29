@@ -5,7 +5,7 @@
 # Gradle build files
 .gradle
 **/build/
-!src/**/build/
+!core/src/**/build/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar

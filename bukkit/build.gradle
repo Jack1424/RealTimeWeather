@@ -1,0 +1,36 @@
+plugins {
+    id("java")
+    id("com.gradleup.shadow")
+}
+
+dependencies {
+    implementation(project(":core"))
+
+    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.12.2")
+
+    implementation("org.bstats:bstats-bukkit:3.2.1")
+}
+
+tasks.named("shadowJar") {
+    archiveBaseName = "RealTimeWeather"
+    archiveClassifier = ""
+
+    relocate("org.bstats", "io.github.jack1424.realTimeWeather.libs.bstats")
+    relocate("org.json.simple", "io.github.jack1424.realTimeWeather.libs.jsonsimple")
+}
+
+tasks.named("build") {
+    dependsOn(tasks.named("shadowJar"))
+}
+
+tasks.named("processResources") {
+    def props = [version: project.version]
+
+    inputs.properties(props)
+    filteringCharset = "UTF-8"
+
+    filesMatching("plugin.yml") {
+        expand(props)
+    }
+}
