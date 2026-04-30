@@ -23,6 +23,6 @@ You'll need to run your server at least once to generate the configuration file.
 After running (and then stopping) your server, simply change the values in the configuration file to what you'd like, and you're good to go.
 
 ## Contributions/Support
-I'm open to any help/ideas that you have. Just open an issue or a pull request, and I'll be sure to look at it as soon as I can. Builds with `gradlew shadowJar`.
+I'm open to any help/ideas that you have. Just open an issue or a pull request, and I'll be sure to look at it as soon as I can. Build with `gradlew build`.
 
 License: GPL-3.0
