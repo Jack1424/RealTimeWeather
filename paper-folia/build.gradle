@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(project(":core"))
 
-    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     compileOnly("me.clip:placeholderapi:2.12.2")
 
     implementation("org.bstats:bstats-bukkit:3.2.1")
@@ -14,11 +14,11 @@ dependencies {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
-    options.release.set(8)
+    options.release.set(25)
 }
 
 tasks.named("shadowJar") {
-    archiveBaseName = "RealTimeWeather-Bukkit"
+    archiveBaseName = "RealTimeWeather-Paper"
     archiveClassifier = ""
 
     relocate("org.bstats", "io.github.jack1424.realTimeWeather.libs.bstats")

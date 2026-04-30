@@ -2,3 +2,4 @@ rootProject.name = "RealTimeWeather"
 
 include("core")
 include("bukkit")
+include("paper-folia")

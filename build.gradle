@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "8.3.10" apply false
+    id("com.gradleup.shadow") version "9.4.1" apply false
 }
 
 allprojects {
@@ -17,12 +17,9 @@ allprojects {
             name = "placeholderapi-repo"
             url = "https://repo.helpch.at/releases"
         }
-    }
-}
-
-subprojects {
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = "UTF-8"
-        options.release.set(8)
+        maven {
+            name = "papermc-repo"
+            url = uri("https://repo.papermc.io/repository/maven-public/")
+        }
     }
 }
