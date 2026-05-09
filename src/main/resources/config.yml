@@ -35,6 +35,10 @@ TimeSyncWorlds:
 # Set to false to enable the /time set command (not recommended)                                                     #
 BlockTimeSetCommand: true
 #                                                                                                                    #
+# Choose how player alerts are delivered: actionbar or chat                                                          #
+# This affects messages like blocked beds and blocked commands                                                       #
+AlertDelivery: actionbar
+#                                                                                                                    #
 # Prevent players from sleeping in beds at night (they will still be able to set their spawn point)                  #
 # If you disable this, strange things could happen                                                                   #
 DisableBedsAtNight: true
