@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import io.github.jack1424.realTimeWeather.utils.TextUtils;
 
 public class EventHandlers implements Listener {
 	private final ConfigManager config;
@@ -39,16 +40,19 @@ public class EventHandlers implements Listener {
 		Player player = event.getPlayer();
 		World playerWorld = player.getWorld();
 		long worldTime = playerWorld.getTime();
+		String disableBedsAtNightMessage = config.getDisableBedsAtNightMessage();
+		String disableBedsDuringThunderMessage = config.getDisableBedsDuringThunderMessage();
+		String alertDelivery = config.getAlertDelivery();
 
 		if (config.isTimeEnabled() && config.getDisableBedsAtNight() && ((!playerWorld.hasStorm() && worldTime >= 12542 && worldTime <= 23459)
 			|| (playerWorld.hasStorm() && worldTime >= 12010 && worldTime <= 23991))) {
 			event.setCancelled(true);
-			player.sendMessage(config.getDisableBedsAtNightMessage());
+			TextUtils.sendPlayerAlert(player, disableBedsAtNightMessage, alertDelivery);
 		}
 
 		if (config.isWeatherEnabled() && config.getDisableBedsDuringThunder() && playerWorld.isThundering()) {
 			event.setCancelled(true);
-			player.sendMessage(config.getDisableBedsDuringThunderMessage());
+			TextUtils.sendPlayerAlert(player, disableBedsDuringThunderMessage, alertDelivery);
 		}
 	}
 }
