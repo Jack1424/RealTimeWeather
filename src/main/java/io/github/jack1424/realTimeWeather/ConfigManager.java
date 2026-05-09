@@ -19,12 +19,13 @@ import java.util.TimeZone;
 
 public class ConfigManager {
 	private static final String DEFAULT_TIME_PLACEHOLDER_FORMAT = "HH:mm z";
+	private static final String DEFAULT_ALERT_DELIVERY = "actionbar";
 	private final RealTimeWeather rtw;
 	private final FileConfiguration configFile;
 	private TimeZone timeZone;
 	private boolean debug, timeEnabled, weatherEnabled, timeSyncAllWorlds, weatherSyncAllWorlds, blockTimeSetCommand, blockWeatherCommand, disableBedsAtNight, disableBedsDuringThunder;
 	private long updateCheckInterval, timeSyncInterval, weatherSyncInterval;
-	private String sunriseSunset, sunriseSunsetLatitude, sunriseSunsetLongitude, apiKey, weatherLatitude, weatherLongitude, disableBedsAtNightMessage, disableBedsDuringThunderMessage, sunriseCustomTime, sunsetCustomTime, timePlaceholderFormat;
+	private String sunriseSunset, sunriseSunsetLatitude, sunriseSunsetLongitude, apiKey, weatherLatitude, weatherLongitude, disableBedsAtNightMessage, disableBedsDuringThunderMessage, sunriseCustomTime, sunsetCustomTime, timePlaceholderFormat, alertDelivery;
 	private HashSet<World> timeSyncWorlds, weatherSyncWorlds;
 
 	public ConfigManager(RealTimeWeather rtw) {
@@ -34,6 +35,7 @@ public class ConfigManager {
 
 	public void refreshValues() {
 		setDebugEnabled(configFile.getBoolean("Debug"));
+		setAlertDelivery(configFile.getString("AlertDelivery"));
 
 		setTimeEnabled(configFile.getBoolean("SyncTime"));
 		if (isTimeEnabled())
@@ -117,6 +119,28 @@ public class ConfigManager {
 	public void setDebugEnabled(boolean value) {
 		debug = value;
 		rtw.getLogger().warning("Debug set to " + value);
+	}
+
+	public String getAlertDelivery() {
+		return alertDelivery;
+	}
+
+	public void setAlertDelivery(String value) {
+		if (value == null || isBlank(value)) {
+			alertDelivery = DEFAULT_ALERT_DELIVERY;
+			rtw.debug("AlertDelivery set to default (blank value)");
+			return;
+		}
+
+		String normalized = value.toLowerCase();
+		if (normalized.equals("actionbar") || normalized.equals("chat")) {
+			alertDelivery = normalized;
+			rtw.debug("AlertDelivery set to " + normalized);
+			return;
+		}
+
+		alertDelivery = DEFAULT_ALERT_DELIVERY;
+		rtw.getLogger().warning("AlertDelivery invalid; using default");
 	}
 
 	public boolean isTimeEnabled() {
