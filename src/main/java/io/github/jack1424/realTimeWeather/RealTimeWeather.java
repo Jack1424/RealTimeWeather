@@ -37,6 +37,10 @@ public final class RealTimeWeather extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new EventHandlers(this), this);
 
+		RealTimeWeatherCommand rtwCommand = new RealTimeWeatherCommand(this);
+		this.getCommand("realtimeweather").setExecutor(rtwCommand);
+		this.getCommand("realtimeweather").setTabCompleter(rtwCommand);
+
 		debug("Enabling metrics...");
 		Metrics metrics = new Metrics(this, 16709);
 		metrics.addCustomChart(new SimplePie("weather_sync_enabled", () -> String.valueOf(config.isWeatherEnabled())));
@@ -203,6 +207,87 @@ public final class RealTimeWeather extends JavaPlugin {
 		} else
 			return String.format("RealTimeWeather (v%s) is outdated! v%s is the latest version.", currentVersion, latestVersion);
 	}
+
+	public void reloadPlugin() {
+		debug("Reloading plugin...");
+		
+		// Reset gamerules for currently managed worlds before reloading config
+		for (World world : getServer().getWorlds()) {
+			if (world.getEnvironment().equals(World.Environment.NORMAL)) {
+				if (config.isTimeEnabled() && config.getTimeSyncWorlds() != null && config.getTimeSyncWorlds().contains(world)) {
+					world.setGameRuleValue("doDaylightCycle", "true");
+				}
+				if (config.isWeatherEnabled() && config.getWeatherSyncWorlds() != null && config.getWeatherSyncWorlds().contains(world)) {
+					world.setGameRuleValue("doWeatherCycle", "true");
+				}
+			}
+		}
+
+		// Reload configuration file
+		reloadConfig();
+		config.refreshValues();
+
+		// Rebuild all tasks
+		rebuildTasks();
+		
+		logger.info("Plugin successfully reloaded.");
+	}
+
+	public void toggleTimeSync(boolean enable) {
+		if (!enable) {
+			for (World world : getServer().getWorlds()) {
+				if (world.getEnvironment().equals(World.Environment.NORMAL)) {
+					if (config.isTimeEnabled() && config.getTimeSyncWorlds() != null && config.getTimeSyncWorlds().contains(world)) {
+						world.setGameRuleValue("doDaylightCycle", "true");
+					}
+				}
+			}
+		}
+
+		config.setTimeEnabled(enable);
+		getConfig().set("SyncTime", enable);
+		saveConfig();
+
+		rebuildTasks();
+	}
+
+	public void toggleWeatherSync(boolean enable) {
+		if (!enable) {
+			for (World world : getServer().getWorlds()) {
+				if (world.getEnvironment().equals(World.Environment.NORMAL)) {
+					if (config.isWeatherEnabled() && config.getWeatherSyncWorlds() != null && config.getWeatherSyncWorlds().contains(world)) {
+						world.setGameRuleValue("doWeatherCycle", "true");
+					}
+				}
+			}
+		}
+
+		config.setWeatherEnabled(enable);
+		getConfig().set("SyncWeather", enable);
+		saveConfig();
+
+		rebuildTasks();
+	}
+
+	private void rebuildTasks() {
+		getServer().getScheduler().cancelTasks(this);
+
+		debug("TimeSync: " + config.isTimeEnabled());
+		if (config.isTimeEnabled()) {
+			setupTime();
+		}
+
+		debug("WeatherSync: " + config.isWeatherEnabled());
+		if (config.isWeatherEnabled()) {
+			setupWeather();
+		}
+
+		long updateCheckInterval = config.getUpdateCheckInterval();
+		if (updateCheckInterval > 0) {
+			getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> logger.info(getUpdateCheck()), updateCheckInterval, updateCheckInterval);
+		}
+	}
+
 
 	public ConfigManager getConfigManager() {
 		return config;

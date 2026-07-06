@@ -6,3 +6,10 @@ load: POSTWORLD
 author: Jack1424
 website: github.com/Jack1424/RealTimeWeather
 softdepend: [PlaceholderAPI]
+
+commands:
+  realtimeweather:
+    description: RealTimeWeather main command.
+    aliases: [rtw]
+    permission: realtimeweather.admin
+
